@@ -1,0 +1,29 @@
+version: "3"
+
+x-logging: &default-logging
+  driver: "json-file"
+  options:
+    max-size: "128m"
+    max-file: "3"
+
+services:
+  webserver:
+    image: nginx:latest
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./nginx/fteqtv.cert.pem:/etc/ssl/cert.pem:ro
+      - ./nginx/fteqtv.key.pem:/etc/ssl/key.pem:ro
+    logging: *default-logging
+
+  fteqtv:
+    build:
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 127.0.0.1:27599:27599/tcp
+      - 127.0.0.1:27599:27599/udp
+    logging: *default-logging
