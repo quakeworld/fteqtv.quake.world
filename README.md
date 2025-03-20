@@ -25,3 +25,11 @@ docker compose up --force-recreate -d
 # Show logs
 docker compose logs # -f to follow
 ```
+
+### Crontab
+Due to an uknown error the service has to be restarted occasionally.
+
+```shell
+crontab -e
+0 9 * * * docker restart compose-fteqtv-1
+```
